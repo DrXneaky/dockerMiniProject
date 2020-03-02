@@ -1,18 +1,17 @@
-version "3.7"
+version: "3.7"
 
 services:
-
   flask:
+    restart: always
     build: ./flask
-    restart: flask
-    environment :
-      - APP_NAME=MyFlaskApp
     expose:
-      - 8080
-  
+      - 8000
+    command: /usr/local/bin/gunicorn -w 2 -b :8000
+
   nginx:
     build: ./nginx
     container_name: nginx
     restart: always
-    ports:
-      -"80:80"
+    ports: -"80:80"
+    depends_on:
+      - web
